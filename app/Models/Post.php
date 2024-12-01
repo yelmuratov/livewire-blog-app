@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'slug', 'content', 'user_id', 'category_id'];
+    protected $fillable = ['title', 'slug', 'content', 'user_id', 'category_id', 'img'];
+    use HasFactory;
 
     public function user()
     {
@@ -27,4 +30,5 @@ class Post extends Model
     {
         return $this->hasMany(Like::class);
     }
+    
 }

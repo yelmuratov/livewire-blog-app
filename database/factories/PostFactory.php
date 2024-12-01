@@ -21,6 +21,7 @@ class PostFactory extends Factory
             'content' => $this->faker->paragraphs(3, true),
             'user_id' => User::inRandomOrder()->first()->id,
             'category_id' => Category::inRandomOrder()->first()->id,
+            'img' => 'https://neilpatel.com/wp-content/uploads/fly-images/47522/blog-post-image-guide-1200x675-c.jpg',
             'created_at' => now(),
             'updated_at' => now(),
         ];
