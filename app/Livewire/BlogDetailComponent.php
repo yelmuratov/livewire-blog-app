@@ -14,6 +14,7 @@ class BlogDetailComponent extends Component
     public $comments;
     public $author;
     public $newComment;
+    public $MainComment;
     public $parentCommentId = null;
 
     public function mount($slug)
@@ -39,22 +40,40 @@ class BlogDetailComponent extends Component
 
     public function submitComment()
     {
-        if($this->newComment) {
-            Comment::create([
-                'user_id' => 1,
-                'post_id' => $this->blog->id,
-                'content' => $this->newComment,
-                'parent_comment_id' => $this->parentCommentId
-            ]);
-
-            $this->newComment = '';
-            $this->parentCommentId = null;
-            $this->comments = Comment::where('post_id', $this->blog->id)
-                ->whereNull('parent_comment_id')->get();
-
-            session()->flash('success', 'Comment submitted successfully');
+        if($this->parentCommentId) {
+            if($this->newComment) {
+                Comment::create([
+                    'user_id' => 1,
+                    'post_id' => $this->blog->id,
+                    'content' => $this->newComment,
+                    'parent_comment_id' => $this->parentCommentId
+                ]);
+    
+                $this->newComment = '';
+                $this->parentCommentId = null;
+                $this->comments = Comment::where('post_id', $this->blog->id)
+                    ->whereNull('parent_comment_id')->get();
+    
+                session()->flash('success', 'Comment submitted successfully');
+            }else{
+                session()->flash('error', 'Comment cannot be empty');
+            }
         }else{
-            session()->flash('error', 'Comment cannot be empty');
+            if($this->MainComment){
+                Comment::create([
+                    'user_id' => 1,
+                    'post_id' => $this->blog->id,
+                    'content' => $this->MainComment
+                ]);
+    
+                $this->MainComment = '';
+                $this->comments = Comment::where('post_id', $this->blog->id)
+                    ->whereNull('parent_comment_id')->get();
+    
+                session()->flash('success', 'Comment submitted successfully');
+            }else{
+                session()->flash('error', 'Comment cannot be empty');
+            }
         }
     }
 

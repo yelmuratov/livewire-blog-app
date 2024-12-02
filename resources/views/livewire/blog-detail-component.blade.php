@@ -107,7 +107,7 @@
                     <form wire:submit.prevent="submitComment" class="mt-3 mb-4">
                       <div class="input-group">
                           <input type="text" class="form-control"
-                              placeholder="Your Comment*" wire:model="newComment">
+                              placeholder="Your Comment*" wire:model="MainComment">
                           <button class="btn btn-primary" type="submit">Post Comment</button>
                       </div>
                   </form>
