@@ -15,7 +15,6 @@ class BlogDetailComponent extends Component
     public $author;
     public $newComment;
     public $parentCommentId = null;
-    public $replies;
 
     public function mount($slug)
     {
@@ -29,9 +28,8 @@ class BlogDetailComponent extends Component
 
         // Fetch top-level comments with replies and user information
         $this->comments = Comment::where('post_id', $this->blog->id)
-            ->whereNull('parent_comment_id') // Top-level comments only
-            ->with('replies', 'user') // Include nested replies and user data
-            ->get();
+            ->whereNull('parent_comment_id')->get();
+        
     }
 
     public function render()
@@ -41,20 +39,25 @@ class BlogDetailComponent extends Component
 
     public function submitComment()
     {
-        $this->validate([
-            'newComment' => 'required|max:1000',
-        ]);
+        if($this->newComment) {
+            Comment::create([
+                'user_id' => 1,
+                'post_id' => $this->blog->id,
+                'content' => $this->newComment,
+                'parent_comment_id' => $this->parentCommentId
+            ]);
 
-        Comment::create([
-            'post_id' => $this->blog->id,
-            'user_id' => 1,
-            'content' => $this->newComment,
-            'parent_comment_id' => $this->parentCommentId,
-        ]);
+            $this->newComment = '';
+            $this->parentCommentId = null;
+            $this->comments = Comment::where('post_id', $this->blog->id)
+                ->whereNull('parent_comment_id')->get();
 
-        $this->reset('newComment', 'parentCommentId');
-        $this->mount($this->slug); 
+            session()->flash('success', 'Comment submitted successfully');
+        }else{
+            session()->flash('error', 'Comment cannot be empty');
+        }
     }
+
 
     public function replyToComment($commentId)
     {

@@ -45,7 +45,7 @@
               </p>
 
               <h2 class="title">
-                <a href={{route('blog.detail',$post->slug)}}>{{$post->title}}</a>
+                <a wire:navigate href={{route('blog.detail',$post->slug)}}>{{$post->title}}</a>
               </h2>
 
               <div class="d-flex align-items-center">

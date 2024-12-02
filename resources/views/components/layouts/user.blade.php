@@ -37,18 +37,18 @@
       </a>
       <nav id="navmenu" class="navmenu">
           <ul>
-              <li><a href="#hero" class="active">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="#portfolio">Portfolio</a></li>
-              <li><a href="#pricing">Pricing</a></li>
-              <li><a href="#team">Team</a></li>
-              <li><a href="/blog">Blog</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li><a href="/#hero" class="active">Home</a></li>
+              <li><a href="/#about">About</a></li>
+              <li><a href="/#services">Services</a></li>
+              <li><a href="/#portfolio">Portfolio</a></li>
+              <li><a href="/#pricing">Pricing</a></li>
+              <li><a href="/#team">Team</a></li>
+              <li><a href="/blog" wire:navigate>Blog</a></li>
+              <li><a href="/#contact">Contact</a></li>
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
-      <a class="btn-getstarted" href="#about">Get Started</a>
+      <a class="btn-getstarted" href="/#about">Get Started</a>
   </div>
 </header>
 @else
@@ -59,14 +59,14 @@
       </a>
       <nav id="navmenu" class="navmenu">
           <ul>
-              <li><a href="/">Home</a></li>
-              <li><a href="/#about">About</a></li>
-              <li><a href="/#services">Services</a></li>
-              <li><a href="/#portfolio">Portfolio</a></li>
-              <li><a href="/#pricing">Pricing</a></li>
-              <li><a href="/#team">Team</a></li>
-              <li><a href="/blog" class="active">Blog</a></li>
-              <li><a href="/#contact">Contact</a></li>
+              <li><a href="/" wire:navigate>Home</a></li>
+              <li><a href="/#about" wire:navigate>About</a></li>
+              <li><a href="/#services" wire:navigate>Services</a></li>
+              <li><a href="/#portfolio" wire:navigate>Portfolio</a></li>
+              <li><a href="/#pricing" wire:navigate>Pricing</a></li>
+              <li><a href="/#team" wire:navigate>Team</a></li>
+              <li><a href="/blog" class="active" wire:navigate>Blog</a></li>
+              <li><a href="/#contact" wire:navigate>Contact</a></li>
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -139,8 +139,7 @@
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <!-- Preloader -->
-  <div id="preloader"></div>
+ 
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
