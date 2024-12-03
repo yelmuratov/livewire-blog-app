@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Like extends Model
 {
-    protected $fillable = ['user_id', 'post_id', 'comment_id'];
+    protected $fillable = ['user_id', 'post_id', 'comment_id', 'status'];
 
     use HasFactory;
 

@@ -61,22 +61,31 @@
                                     <li class="d-flex align-items-center"><i class="bi bi-clock"></i><time
                                             datetime="2020-01-01">{{ $blog->created_at }}</time></li>
                                     <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i>
-                                        {{ $comments->count() }}
+                                        {{ $comments->count()}}
                                         Comments
                                     </li>
                                 </ul>
                             </div><!-- End meta top -->
                             <div class="d-flex align-items-center mt-3">
-                                <button class="btn btn-outline-success me-2" wire:click="likePost({{ $blog->id }})">
-                                    <i class="bi bi-hand-thumbs-up"></i> Like
-                                </button>
-                                <span>{{ $blog->likes_count }}</span>
-                                <button class="btn btn-outline-danger ms-3" wire:click="dislikePost({{ $blog->id }})">
-                                    <i class="bi bi-hand-thumbs-down"></i> Dislike
-                                </button>
-                                <span>{{ $blog->dislikes_count }}</span>
+                                <div class="d-flex align-items-center me-4">
+                                    <button 
+                                        class="btn {{ $userLiked ? 'btn-success' : 'btn-outline-success' }} d-flex align-items-center" 
+                                        wire:click="likeAndDislikePost({{ $blog->id }}, 'like')">
+                                        <i class="bi bi-hand-thumbs-up me-1"></i> Like
+                                    </button>
+                                    <span class="ms-2 text-success fw-bold">{{$likeCount}}</span>
+                                </div>
+                            
+                                <div class="d-flex align-items-center">
+                                    <button 
+                                        class="btn {{ $userDisliked ? 'btn-danger' : 'btn-outline-danger' }} d-flex align-items-center" 
+                                        wire:click="likeAndDislikePost({{ $blog->id }}, 'dislike')">
+                                        <i class="bi bi-hand-thumbs-down me-1"></i> Dislike
+                                    </button>
+                                    <span class="ms-2 text-danger fw-bold">{{$dislikeCount}}</span>
+                                </div>
                             </div>
-
+                            
                             <div class="content">
                                 <p>
                                     {{ $blog->content }}
@@ -219,3 +228,5 @@
     </div>
 
 </div>
+
+@livewireScripts

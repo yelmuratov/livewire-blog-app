@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\User;
+use App\Models\Like;
 
 class BlogDetailComponent extends Component
 {   
@@ -16,6 +17,10 @@ class BlogDetailComponent extends Component
     public $newComment;
     public $MainComment;
     public $parentCommentId = null;
+    public $likeCount;
+    public $dislikeCount;
+    public $userLiked = false;
+    public $userDisliked = false;
 
     public function mount($slug)
     {
@@ -31,6 +36,13 @@ class BlogDetailComponent extends Component
         $this->comments = Comment::where('post_id', $this->blog->id)
             ->whereNull('parent_comment_id')->get();
         
+            
+        $this->blog->refresh();
+        // Fetch the like and dislike count
+        $this->likeCount = $this->blog->likes->where('status', 'like')->count();
+        $this->dislikeCount = $this->blog->likes->where('status', 'dislike')->count();
+
+        $this->updateUserLikeDislikeStatus();
     }
 
     public function render()
@@ -43,7 +55,7 @@ class BlogDetailComponent extends Component
         if($this->parentCommentId) {
             if($this->newComment) {
                 Comment::create([
-                    'user_id' => 1,
+                    'user_id' => auth()->user()->id,
                     'post_id' => $this->blog->id,
                     'content' => $this->newComment,
                     'parent_comment_id' => $this->parentCommentId
@@ -61,7 +73,7 @@ class BlogDetailComponent extends Component
         }else{
             if($this->MainComment){
                 Comment::create([
-                    'user_id' => 1,
+                    'user_id' => auth()->user()->id,
                     'post_id' => $this->blog->id,
                     'content' => $this->MainComment
                 ]);
@@ -86,4 +98,51 @@ class BlogDetailComponent extends Component
             $this->parentCommentId = $commentId;
         }
     }
+
+    public function likeAndDislikePost($postId, $status)
+    {
+        if (!auth()->check()) {
+            session()->flash('error', 'You must be logged in to like or dislike a post.');
+            return;
+        }
+
+        $like = Like::where('user_id', auth()->user()->id)
+            ->where('post_id', $postId)
+            ->first();
+
+        if ($like) {
+            $like->update([
+                'status' => $status
+            ]);
+        } else {
+            Like::create([
+                'user_id' => auth()->user()->id,
+                'post_id' => $postId,
+                'status' => $status
+            ]);
+        }
+
+        // Force refresh the blog object to get the latest like/dislike count
+        $this->blog = $this->blog->fresh();
+        $this->likeCount = $this->blog->likes->where('status', 'like')->count();
+        $this->dislikeCount = $this->blog->likes->where('status', 'dislike')->count();
+
+        $this->updateUserLikeDislikeStatus();
+    }
+
+    private function updateUserLikeDislikeStatus()
+    {
+        if (auth()->check()) {
+            $like = Like::where('user_id', auth()->user()->id)
+                ->where('post_id', $this->blog->id)
+                ->first();
+
+            $this->userLiked = $like && $like->status === 'like';
+            $this->userDisliked = $like && $like->status === 'dislike';
+        } else {
+            $this->userLiked = false;
+            $this->userDisliked = false;
+        }
+    }
+
 }
