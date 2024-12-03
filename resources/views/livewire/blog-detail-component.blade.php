@@ -40,7 +40,6 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-
                 <!-- Blog Details Section -->
                 <section id="blog-details" class="blog-details section">
                     <div class="container">
@@ -67,6 +66,16 @@
                                     </li>
                                 </ul>
                             </div><!-- End meta top -->
+                            <div class="d-flex align-items-center mt-3">
+                                <button class="btn btn-outline-success me-2" wire:click="likePost({{ $blog->id }})">
+                                    <i class="bi bi-hand-thumbs-up"></i> Like
+                                </button>
+                                <span>{{ $blog->likes_count }}</span>
+                                <button class="btn btn-outline-danger ms-3" wire:click="dislikePost({{ $blog->id }})">
+                                    <i class="bi bi-hand-thumbs-down"></i> Dislike
+                                </button>
+                                <span>{{ $blog->dislikes_count }}</span>
+                            </div>
 
                             <div class="content">
                                 <p>
@@ -110,7 +119,7 @@
                               placeholder="Your Comment*" wire:model="MainComment">
                           <button class="btn btn-primary" type="submit">Post Comment</button>
                       </div>
-                  </form>
+                    </form>
                   <br>
                   <br>
                   <br>
@@ -144,11 +153,11 @@
 
                                         if ($parentCommentId == $comment->id) {
                                             echo '<form wire:submit.prevent="submitComment" class="mt-3">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Your Comment*" wire:model="newComment">
-                        <button class="btn btn-primary" type="submit">Post Comment</button>
-                    </div>
-                </form>';
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Your Comment*" wire:model="newComment">
+                                                        <button class="btn btn-primary" type="submit">Post Comment</button>
+                                                    </div>
+                                                </form>';
                                         }
 
                                         PrintReply($comment, $level + 1, $parentCommentId, $newComment);
