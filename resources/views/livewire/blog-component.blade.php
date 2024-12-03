@@ -78,8 +78,8 @@
         <div class="search-widget widget-item">
 
           <h3 class="widget-title">Search</h3>
-          <form action="">
-            <input type="text">
+          <form wire:submit.prevent="searchPosts">
+            <input type="text" wire:model="searchText">
             <button type="submit" title="Search"><i class="bi bi-search"></i></button>
           </form>
 

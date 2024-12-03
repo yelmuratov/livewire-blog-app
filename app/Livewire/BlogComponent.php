@@ -10,6 +10,7 @@ use App\Models\User;
 class BlogComponent extends Component
 {
     public $selectedCategory = '';
+    public $searchText = '';
 
     public function render()
     {   
@@ -19,6 +20,16 @@ class BlogComponent extends Component
             $query->where('category_id', $this->selectedCategory);
         }
 
+        $posts = $query->paginate(6);
+        $categories = Category::all();
+        $users = User::all();
+        return view('livewire.blog-component', ['posts' => $posts, 'categories' => $categories, 'users' => $users])->layout('components.layouts.user');
+    }
+
+    public function searchPosts()
+    {
+        $query = Post::query();
+        $query->where('title', 'like', '%' . $this->searchText . '%');
         $posts = $query->paginate(6);
         $categories = Category::all();
         $users = User::all();
